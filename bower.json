@@ -1,0 +1,20 @@
+{
+  "name": "purescript-format",
+  "authors": [
+    "David Peter <mail@david-peter.de>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "output",
+    "test"
+  ],
+  "dependencies": {
+    "purescript-strings": "^0.7.1",
+    "purescript-arrays": "^0.4.5"
+  },
+  "devDependencies": {
+    "purescript-test-unit": "^4.1.0"
+  }
+}
