@@ -3,6 +3,10 @@
   "authors": [
     "David Peter <mail@david-peter.de>"
   ],
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/sharkdp/purescript-format.git"
+  },
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -12,7 +16,8 @@
   ],
   "dependencies": {
     "purescript-strings": "^0.7.1",
-    "purescript-arrays": "^0.4.5"
+    "purescript-arrays": "^0.4.5",
+    "purescript-math": "^0.2.0"
   },
   "devDependencies": {
     "purescript-test-unit": "^4.1.0"
