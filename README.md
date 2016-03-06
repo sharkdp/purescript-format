@@ -10,6 +10,6 @@ Type-safe, printf-style formatting for PureScript.
 > formatInt (signed <> width 6) 123
 "  +123"
 
-> formatInt (signed <> width 6 <> fillZeros) (-123)
+> formatInt (width 6 <> fillZeros) (-123)
 "-00123"
 ```
