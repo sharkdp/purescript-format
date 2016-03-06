@@ -2,6 +2,8 @@
 
 Type-safe, printf-style formatting for PureScript.
 
+- [Module documentation](https://pursuit.purescript.org/packages/purescript-format)
+
 ## Usage
 ``` purs
 > format (width 6) 123
