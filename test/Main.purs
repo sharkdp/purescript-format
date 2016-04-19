@@ -111,3 +111,11 @@ main = runTest do
   test "Number: format (width, precision, signed, zeroFill)" do
     equal "+03.14" $ format (width 6 <> precision 2 <> signed <> zeroFill) pi
     equal "+3.142" $ format (width 6 <> precision 3 <> signed <> zeroFill) pi
+
+  test "Handling of zero" do
+    equal "0"      $ format mempty 0
+    equal "0"      $ format (precision 0) 0.0
+    equal "0.00"   $ format (precision 2) 0.0
+    equal "+0"     $ format signed 0
+    equal "+0.0"   $ format signed 0.0
+    equal "+0.00"  $ format (signed <> precision 2) 0

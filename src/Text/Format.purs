@@ -111,9 +111,9 @@ instance formatInt :: Format Int where
    where
      isSigned = fromMaybe false rec.signed
      padChar = fromMaybe ' ' rec.padChar
-     isPositive = num > 0
-     numAbs = if isPositive then num else (-num)
-     numSgn = if isPositive
+     nonNegative = num >= 0
+     numAbs = if nonNegative then num else (-num)
+     numSgn = if nonNegative
                 then (if isSigned then "+" else "")
                 else "-"
 
@@ -140,13 +140,13 @@ instance formatNumber :: Format Number where
                in  round (f * num') / f
      isSigned = fromMaybe false rec.signed
      padChar = fromMaybe ' ' rec.padChar
-     isPositive = num > 0.0
+     nonNegative = num >= 0.0
      numAbsStr' = show (abs num)
      numAbsStr = case rec.precision of
                    Nothing -> numAbsStr'
                    Just p -> numAbsStr' <> paddedZeros p
      paddedZeros p = let d = length (dropWhile (_ /= '.') numAbsStr') - 1
                      in fromCharArray (replicate (p - d) '0')
-     numSgn = if isPositive
+     numSgn = if nonNegative
                 then (if isSigned then "+" else "")
                 else "-"
