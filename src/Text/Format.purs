@@ -14,7 +14,7 @@ module Text.Format
 import Prelude
 
 import Control.Alt ((<|>))
-import Data.Array (replicate)
+import Data.Unfoldable (replicate)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Monoid (class Monoid)
