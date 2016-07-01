@@ -7,9 +7,15 @@ import Math (pi)
 
 import Text.Format (width, signed, zeroFill, precision, format)
 
-import Test.Unit (test, runTest)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (CONSOLE)
+
+import Test.Unit (test)
+import Test.Unit.Main (runTest)
+import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Assert (assert, equal)
 
+main :: Eff (console :: CONSOLE, testOutput :: TESTOUTPUT) Unit
 main = runTest do
   test "Semigroup instance" do
     assert "right option should take precendence" $

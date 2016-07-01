@@ -23,6 +23,6 @@
   }
 ,
   "devDependencies": {
-    "purescript-test-unit": "^4.1.0"
+    "purescript-test-unit": "^7.0.0"
   }
 }
