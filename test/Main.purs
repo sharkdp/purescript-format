@@ -9,13 +9,14 @@ import Text.Format (width, signed, zeroFill, precision, format)
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
+import Control.Monad.Aff.AVar (AVAR)
 
 import Test.Unit (test)
 import Test.Unit.Main (runTest)
 import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Assert (assert, equal)
 
-main :: Eff (console :: CONSOLE, testOutput :: TESTOUTPUT) Unit
+main :: Eff (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR) Unit
 main = runTest do
   test "Semigroup instance" do
     assert "right option should take precendence" $
