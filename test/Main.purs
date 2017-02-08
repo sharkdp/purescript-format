@@ -5,7 +5,7 @@ import Prelude
 import Data.Monoid (mempty)
 import Math (pi)
 
-import Text.Format (width, signed, zeroFill, precision, format)
+import Text.Format (width, signed, zeroFill, precision, decimalMark, format)
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
@@ -78,6 +78,9 @@ main = runTest do
     equal  "+123" $ format signed   123
     equal  "-123" $ format signed (-123)
 
+  test "Int: format (precision, decimalMark)" do
+    equal  "123,00" $ format (precision 2 <> decimalMark ',') 123
+
   test "Number: format" do
     equal  "3.14" $ format mempty   3.14
     equal "-3.14" $ format mempty (-3.14)
@@ -108,6 +111,10 @@ main = runTest do
     equal "3.0"     $ format (precision 1) 3
     equal "3.000"   $ format (precision 3) 3
 
+  test "Number: format (precision, decimalMark)" do
+    equal "3"       $ format (precision 0 <> decimalMark ',') pi
+    equal "3,1"     $ format (precision 1 <> decimalMark ',') pi
+
   test "Number: format (width, precision)" do
     equal "  3.14" $ format (width 6 <> precision 2) pi
     equal "     3" $ format (width 6 <> precision 0) pi
@@ -119,10 +126,15 @@ main = runTest do
     equal "+03.14" $ format (width 6 <> precision 2 <> signed <> zeroFill) pi
     equal "+3.142" $ format (width 6 <> precision 3 <> signed <> zeroFill) pi
 
+  test "Number: format (width, precision, signed, zeroFill, decimalMark)" do
+    equal "+03,14" $ format (width 6 <> precision 2 <> signed <> zeroFill <> decimalMark ',') pi
+    equal "+3,142" $ format (width 6 <> precision 3 <> signed <> zeroFill <> decimalMark ',') pi
+
   test "Handling of zero" do
     equal "0"      $ format mempty 0
     equal "0"      $ format (precision 0) 0.0
     equal "0.00"   $ format (precision 2) 0.0
+    equal "0,00"   $ format (precision 2 <> decimalMark ',') 0.0
     equal "+0"     $ format signed 0
     equal "+0.0"   $ format signed 0.0
     equal "+0.00"  $ format (signed <> precision 2) 0

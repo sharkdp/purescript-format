@@ -7,6 +7,7 @@ module Text.Format
   , zeroFill
   , signed
   , precision
+  , decimalMark
   , class Format
   , format
   ) where
@@ -18,7 +19,7 @@ import Data.Unfoldable (replicate)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Monoid (class Monoid)
-import Data.String (length, fromCharArray, dropWhile)
+import Data.String (length, fromCharArray, dropWhile, singleton, replace, Pattern(..), Replacement(..))
 import Math (round, pow, abs)
 
 -- | Pad a string on the left up to a given maximum length. The padding
@@ -32,6 +33,7 @@ type PropertiesRecord =
   , padChar :: Maybe Char
   , signed :: Maybe Boolean
   , precision :: Maybe Int
+  , decimalMark :: Maybe Char
   }
 
 default :: PropertiesRecord
@@ -40,6 +42,7 @@ default =
   , padChar: Nothing
   , signed: Nothing
   , precision: Nothing
+  , decimalMark: Nothing
   }
 
 data Properties = Properties PropertiesRecord
@@ -49,17 +52,19 @@ instance eqProperties :: Eq Properties where
     rec1.width     == rec2.width &&
     rec1.padChar   == rec2.padChar &&
     rec1.signed    == rec2.signed &&
-    rec1.precision == rec2.precision
+    rec1.precision == rec2.precision &&
+    rec1.decimalMark == rec2.decimalMark
 
 instance semigroupProperties :: Semigroup Properties where
   append (Properties rec1) (Properties rec2) = Properties rec
     where
       -- These are combined such that options to the right take precedence:
       -- width 3 <> width 4 == width 4
-      rec = { width:     rec2.width      <|> rec1.width
-            , padChar:   rec2.padChar    <|> rec1.padChar
-            , signed:    rec2.signed     <|> rec1.signed
-            , precision: rec2.precision  <|> rec1.precision
+      rec = { width:       rec2.width       <|> rec1.width
+            , padChar:     rec2.padChar     <|> rec1.padChar
+            , signed:      rec2.signed      <|> rec1.signed
+            , precision:   rec2.precision   <|> rec1.precision
+            , decimalMark: rec2.decimalMark <|> rec1.decimalMark
             }
 
 instance monoidProperties :: Monoid Properties where
@@ -81,6 +86,10 @@ signed = Properties (default { signed = Just true })
 -- | Number of decimal places. Gets ignored for non-numeric types.
 precision :: Int -> Properties
 precision digits = Properties (default { precision = Just digits })
+
+-- | Delimiter character. Gets ignored for non-numeric types.
+decimalMark :: Char -> Properties
+decimalMark char = Properties (default { decimalMark = Just char })
 
 -- | A class for types that can be formatted using the specified properties.
 class Format a where
@@ -141,11 +150,15 @@ instance formatNumber :: Format Number where
      isSigned = fromMaybe false rec.signed
      padChar = fromMaybe ' ' rec.padChar
      nonNegative = num >= 0.0
-     numAbsStr' = show (abs num)
+     numAbsStr'' = show (abs num)
+     numAbsStr' = case rec.decimalMark of
+                    Nothing -> numAbsStr''
+                    Just d -> replace (Pattern ".") (Replacement (singleton d)) numAbsStr''
      numAbsStr = case rec.precision of
                    Nothing -> numAbsStr'
                    Just p -> numAbsStr' <> paddedZeros p
-     paddedZeros p = let d = length (dropWhile (_ /= '.') numAbsStr') - 1
+     usedDelimiter = fromMaybe '.' rec.decimalMark
+     paddedZeros p = let d = length (dropWhile (_ /= usedDelimiter) numAbsStr') - 1
                      in fromCharArray (replicate (p - d) '0')
      numSgn = if nonNegative
                 then (if isSigned then "+" else "")
