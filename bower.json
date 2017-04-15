@@ -15,14 +15,14 @@
     "test"
   ],
   "dependencies": {
-    "purescript-strings": "^2.0.0",
-    "purescript-arrays": "^3.0.0",
+    "purescript-strings": "^3.0.0",
+    "purescript-arrays": "^4.0.1",
     "purescript-math": "^2.0.0",
-    "purescript-unfoldable": "^2.0.0",
-    "purescript-integers": "^2.0.0"
+    "purescript-unfoldable": "^3.0.0",
+    "purescript-integers": "^3.0.0"
   }
 ,
   "devDependencies": {
-    "purescript-test-unit": "^10.0.0"
+    "purescript-test-unit": "^11.0.0"
   }
 }
