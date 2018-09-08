@@ -18,15 +18,16 @@ import Control.Alt ((<|>))
 import Data.Unfoldable (replicate)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Monoid (class Monoid)
-import Data.String (length, fromCharArray, dropWhile, singleton, replace, Pattern(..), Replacement(..))
+import Data.String (length, dropWhile, replace, Pattern(..), Replacement(..))
+import Data.String.CodePoints (singleton, fromCodePointArray, codePointFromChar)
 import Math (round, pow, abs)
 
 -- | Pad a string on the left up to a given maximum length. The padding
 -- | character can be specified.
 padLeft :: Char -> Int -> String -> String
 padLeft c len str = prefix <> str
-  where prefix = fromCharArray (replicate (len - length str) c)
+  where prefix = fromCodePointArray $
+          map codePointFromChar (replicate (len - length str) c)
 
 type PropertiesRecord =
   { width :: Maybe Int
@@ -153,13 +154,13 @@ instance formatNumber :: Format Number where
      numAbsStr'' = show (abs num)
      numAbsStr' = case rec.decimalMark of
                     Nothing -> numAbsStr''
-                    Just d -> replace (Pattern ".") (Replacement (singleton d)) numAbsStr''
+                    Just d -> replace (Pattern ".") (Replacement (singleton $ codePointFromChar d)) numAbsStr''
      numAbsStr = case rec.precision of
                    Nothing -> numAbsStr'
                    Just p -> numAbsStr' <> paddedZeros p
-     usedDelimiter = fromMaybe '.' rec.decimalMark
+     usedDelimiter = codePointFromChar $ fromMaybe '.' rec.decimalMark
      paddedZeros p = let d = length (dropWhile (_ /= usedDelimiter) numAbsStr') - 1
-                     in fromCharArray (replicate (p - d) '0')
+                     in fromCodePointArray $ map codePointFromChar (replicate (p - d) '0')
      numSgn = if nonNegative
                 then (if isSigned then "+" else "")
                 else "-"

@@ -1,22 +1,15 @@
 module Test.Main where
 
-import Prelude
-
-import Data.Monoid (mempty)
+import Prelude (Unit, discard, mempty, negate, ($), (*), (<>), (==))
 import Math (pi)
-
+import Effect (Effect)
 import Text.Format (width, signed, zeroFill, precision, decimalMark, format)
-
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE)
-import Control.Monad.Aff.AVar (AVAR)
-
 import Test.Unit (test)
 import Test.Unit.Main (runTest)
-import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Assert (assert, equal)
 
-main :: Eff (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR) Unit
+
+main :: Effect Unit
 main = runTest do
   test "Semigroup instance" do
     assert "right option should take precendence" $
