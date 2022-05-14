@@ -18,9 +18,9 @@ import Control.Alt ((<|>))
 import Data.Unfoldable (replicate)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Number (round, pow, abs)
 import Data.String (length, dropWhile, replace, Pattern(..), Replacement(..))
 import Data.String.CodePoints (singleton, fromCodePointArray, codePointFromChar)
-import Math (round, pow, abs)
 
 -- | Pad a string on the left up to a given maximum length. The padding
 -- | character can be specified.

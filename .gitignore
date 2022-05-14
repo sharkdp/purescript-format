@@ -1,6 +1,4 @@
-/bower_components/
+/.spago
 /node_modules/
-/.pulp-cache/
 /output/
-/.psci*
 /src/.webpack.js

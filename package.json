@@ -1,0 +1,18 @@
+{
+  "name": "purescript-format",
+  "authors": [
+    "David Peter <mail@david-peter.de>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sharkdp/purescript-format.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "spago test"
+  },
+  "devDependencies": {
+    "purescript": "^0.15.0",
+    "spago": "^0.20.9"
+  }
+}
