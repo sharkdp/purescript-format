@@ -1,7 +1,7 @@
 module Test.Main where
 
 import Prelude (Unit, discard, mempty, negate, ($), (*), (<>), (==))
-import Math (pi)
+import Data.Number (pi)
 import Effect (Effect)
 import Text.Format (width, signed, zeroFill, precision, decimalMark, format)
 import Test.Unit (test)
